@@ -31,7 +31,7 @@ export default function Header() {
 				<h1 className="text-xl font-bold">My Booking</h1>
 
 				{/* Desktop Menu */}
-				<nav className="hidden sm:flex space-x-6 items-center mx-auto">
+				<nav className="hidden lg:flex space-x-6 items-center mx-auto">
 					{menuItems.map((item) => (
 						<div key={item.name} className="relative group">
 							{item.submenu ? (
@@ -79,7 +79,7 @@ export default function Header() {
 
 					{/* Mobile Menu Button */}
 					<button
-						className="sm:hidden p-2 rounded-full text-gray-700 hover:bg-gray-100"
+						className="lg:hidden p-2 rounded-full text-gray-700 hover:bg-gray-100"
 						onClick={() => setMobileMenuOpen(true)}
 					>
 						<FiMenu className="w-6 h-6" />
@@ -147,7 +147,7 @@ export default function Header() {
 			{/* Background Overlay */}
 			{mobileMenuOpen && (
 				<div
-					className="fixed inset-0 bg-black bg-opacity-40 z-40 sm:hidden"
+					className="fixed inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
 					onClick={() => setMobileMenuOpen(false)}
 				></div>
 			)}

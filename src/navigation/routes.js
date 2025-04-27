@@ -2,10 +2,7 @@
 
 const routes = {
 	home: '/',
-	carBooking: '/car-booking',
-	hotelRental: '/hotel-rental',
-	bikeSharing: '/bike-sharing',
-	contact: '/contact',
+	login: '/auth/login',
 };
 
 export default routes;

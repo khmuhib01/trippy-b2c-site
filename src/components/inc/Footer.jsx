@@ -1,15 +1,94 @@
+import Image from 'next/image';
 import {FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaLinkedinIn} from 'react-icons/fa';
+import {stPay, amexCard, bkash, dbbl, dinnersClub, masterCard, nagad, ok, tap, upay, visaCard} from '@/ui-share/Image';
+import {useEffect, useRef} from 'react';
 
 export default function Footer() {
+	const canvasRef = useRef(null);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const canvas = canvasRef.current;
+			if (!canvas) return;
+
+			const ctx = canvas.getContext('2d');
+			const resizeCanvas = () => {
+				canvas.width = canvas.offsetWidth;
+				canvas.height = canvas.offsetHeight;
+			};
+			resizeCanvas();
+
+			class Bubble {
+				constructor() {
+					this.reset();
+					this.y = Math.random() * canvas.height;
+				}
+
+				reset() {
+					this.x = Math.random() * canvas.width;
+					this.y = canvas.height + Math.random() * 100;
+					this.radius = Math.random() * 15 + 5;
+					this.speed = Math.random() * 1 + 0.5;
+					this.opacity = Math.random() * 0.2 + 0.05;
+					this.wobble = Math.random() * 2;
+					this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+				}
+
+				update() {
+					this.y -= this.speed;
+					this.x += Math.sin(this.y * this.wobbleSpeed) * this.wobble;
+
+					if (this.y < -this.radius * 2) {
+						this.reset();
+					}
+				}
+
+				draw() {
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+					ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+					ctx.fill();
+				}
+			}
+
+			const bubbles = Array.from({length: 20}, () => new Bubble());
+			let animationId;
+
+			const animate = () => {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				bubbles.forEach((bubble) => {
+					bubble.update();
+					bubble.draw();
+				});
+				animationId = requestAnimationFrame(animate);
+			};
+
+			animate();
+
+			const handleResize = () => {
+				resizeCanvas();
+			};
+
+			window.addEventListener('resize', handleResize);
+			return () => {
+				window.removeEventListener('resize', handleResize);
+				cancelAnimationFrame(animationId);
+			};
+		}
+	}, []);
+
 	return (
-		<footer className="bg-white text-gray-700 pt-10">
-			<div className="container mx-auto px-4">
-				<div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+		<footer className="relative overflow-hidden bg-gradient-to-br from-blue-50/70 to-blue-100/70 text-gray-800 pt-10">
+			{/* Bubble animation canvas */}
+			<canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-70" />
+
+			<div className="container mx-auto px-4 relative z-10">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-8">
 					{/* Company Info */}
-					<div className="space-y-4">
-						<img src="/logo.svg" alt="ShareTrip" className="h-8" />
+					<div>
+						<h4 className="text-lg font-semibold mb-4">Company Info</h4>
 						<p className="text-sm">
-							ShareTrip is the country’s first and leading online travel aggregator (OTA). Since our inception, we have
+							ShareTrip is the country's first and leading online travel aggregator (OTA). Since our inception, we have
 							dreamt of making travel easier for people of all ages and we move forward to make that dream into reality.
 						</p>
 					</div>
@@ -126,17 +205,23 @@ export default function Footer() {
 							</li>
 						</ul>
 					</div>
-				</div>
 
-				{/* Payment icons */}
-				<div className="mb-10">
-					<h4 className="text-lg font-semibold mb-4">We accept</h4>
-					<div className="flex flex-wrap items-center gap-3">
-						<img src="/payments/stpay.svg" alt="ST Pay" className="h-6" />
-						<img src="/payments/visa.svg" alt="Visa" className="h-6" />
-						<img src="/payments/mastercard.svg" alt="Mastercard" className="h-6" />
-						<img src="/payments/bkash.svg" alt="bKash" className="h-6" />
-						{/* Add more payment icons similarly */}
+					{/* Payment icons */}
+					<div className="col-span-2 sm:col-span-1 md:col-span-2 lg:col-span-1">
+						<h4 className="text-lg font-semibold mb-4">We accept</h4>
+						<div className="flex flex-wrap items-center gap-3">
+							<Image src={stPay} alt="ST Pay" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={amexCard} alt="Amex Card" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={bkash} alt="Bkash" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={dbbl} alt="DBBL" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={dinnersClub} alt="Dinners Club" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={masterCard} alt="Master Card" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={nagad} alt="Nagad" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={ok} alt="OK" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={tap} alt="Tap" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={upay} alt="Upay" className="border-1 border-gray-200" height={50} width={50} />
+							<Image src={visaCard} alt="Visa Card" className="border-1 border-gray-200" height={50} width={50} />
+						</div>
 					</div>
 				</div>
 
@@ -162,7 +247,6 @@ export default function Footer() {
 								Message us
 							</a>
 						</p>
-
 						<div className="flex space-x-4 mt-4">
 							<a href="#">
 								<FaFacebookF className="w-5 h-5 hover:text-blue-600" />
